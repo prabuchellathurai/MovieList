@@ -10,7 +10,7 @@ class ImageFetcher {
     
     func download(url: String, block: @escaping (UIImage?) -> Void) {
         
-        guard cache[url] == nil else {
+        guard !cache.keys.contains(url) else {
             block(cache[url])
             return
         }

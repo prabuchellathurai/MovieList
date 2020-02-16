@@ -32,16 +32,7 @@ class MovieListTableViewCell: UITableViewCell {
     
     func setViewModel(_ model: MovieListCellViewModel) {
         cellViewModel = model
-        updateImageAfterDownload()
         updateText()
-    }
-    
-    private func updateImageAfterDownload() {
-        cellViewModel?.update = { [weak self] image in
-            DispatchQueue.main.async {
-                self?.posterImageView.image = image
-            }
-        }
     }
     
     private func updateText() {

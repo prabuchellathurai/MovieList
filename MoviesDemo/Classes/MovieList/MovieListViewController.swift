@@ -5,7 +5,7 @@ class MovieListViewController: UITableViewController {
     private let segueID = "MovieDetail"
     
     private var activityIndicator: UIActivityIndicatorView!
-    private let viewModel: MovieListViewModel = MovieListViewModel()
+    private var viewModel: IMovieListViewModel = MovieListViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +19,9 @@ class MovieListViewController: UITableViewController {
     }
 
     private func initialUISetup() {
+        tableView.dragInteractionEnabled = true
+        tableView.dragDelegate = self
+        
         navigationItem.title = viewModel.title
         
         activityIndicator = UIActivityIndicatorView(style: .large )
@@ -51,6 +54,12 @@ class MovieListViewController: UITableViewController {
             }
         }
         
+        viewModel.update = { [weak self] (image, index) in
+            DispatchQueue.main.async {
+                self?.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+            }
+        }
+        
         viewModel.loadMoviesList()
     }
     
@@ -68,31 +77,6 @@ class MovieListViewController: UITableViewController {
         viewModel.cancelAllDownloads()
     }
     
-    // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.movie.count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: MovieListTableViewCell.reuseID) as? MovieListTableViewCell
-        let movieCellViewModel = viewModel.objectAtIndex(index: indexPath.row)
-        cell!.setViewModel(movieCellViewModel)
-        return cell!
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: segueID, sender: indexPath.row)
-    }
-    
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -105,4 +89,53 @@ class MovieListViewController: UITableViewController {
         }
     }
 
+}
+
+// MARK: - Table view data source
+extension MovieListViewController {
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.movie.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: MovieListTableViewCell.reuseID) as? MovieListTableViewCell
+        viewModel.downloadImage(index: indexPath.row)
+        let movieCellViewModel = viewModel.objectAtIndex(index: indexPath.row)
+        cell?.setViewModel(movieCellViewModel)
+        cell?.selectionStyle = .none
+        return cell ?? UITableViewCell()
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        performSegue(withIdentifier: segueID, sender: indexPath.row)
+    }
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        viewModel.move(source: sourceIndexPath.row, destination: destinationIndexPath.row)
+    }
+    
+}
+
+extension MovieListViewController: UITableViewDragDelegate {
+  
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let itemProvider = NSItemProvider()
+        let item = UIDragItem(itemProvider: itemProvider)
+        return [item]
+    }
+    
 }
