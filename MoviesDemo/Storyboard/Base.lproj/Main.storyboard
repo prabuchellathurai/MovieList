@@ -45,9 +45,9 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM2-fg-Kbf">
-                                <rect key="frame" x="57" y="326" width="300" height="21"/>
+                                <rect key="frame" x="57" y="331.5" width="300" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.83264194542253522" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bq3-sW-sT0">
@@ -65,22 +65,31 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3jP-zB-3pk">
-                                <rect key="frame" x="57" y="297" width="300" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="57" y="297" width="300" height="26.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1mc-Ra-K4n">
+                                <rect key="frame" x="57" y="360.5" width="300" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="P98-8d-4YO" firstAttribute="centerX" secondItem="UXJ-Q8-B8u" secondAttribute="centerX" id="7Ss-1B-GuV"/>
+                            <constraint firstItem="1mc-Ra-K4n" firstAttribute="top" secondItem="lM2-fg-Kbf" secondAttribute="bottom" constant="8" id="9BY-qI-FBn"/>
                             <constraint firstItem="lM2-fg-Kbf" firstAttribute="top" secondItem="3jP-zB-3pk" secondAttribute="bottom" constant="8" id="LAl-Tg-eET"/>
                             <constraint firstItem="3jP-zB-3pk" firstAttribute="leading" secondItem="P98-8d-4YO" secondAttribute="leading" id="Y9J-jT-FiE"/>
+                            <constraint firstItem="1mc-Ra-K4n" firstAttribute="trailing" secondItem="lM2-fg-Kbf" secondAttribute="trailing" id="ZeP-NM-vFD"/>
                             <constraint firstItem="bq3-sW-sT0" firstAttribute="centerX" secondItem="UXJ-Q8-B8u" secondAttribute="centerX" id="a4u-Xs-c12"/>
                             <constraint firstItem="3jP-zB-3pk" firstAttribute="trailing" secondItem="P98-8d-4YO" secondAttribute="trailing" id="aY5-M1-7E2"/>
                             <constraint firstItem="lM2-fg-Kbf" firstAttribute="leading" secondItem="3jP-zB-3pk" secondAttribute="leading" id="au6-rB-D7A"/>
                             <constraint firstItem="bq3-sW-sT0" firstAttribute="top" secondItem="UXJ-Q8-B8u" secondAttribute="top" constant="12" id="fxI-Sh-YOc"/>
                             <constraint firstItem="lM2-fg-Kbf" firstAttribute="trailing" secondItem="3jP-zB-3pk" secondAttribute="trailing" id="rzg-d6-aeC"/>
+                            <constraint firstItem="1mc-Ra-K4n" firstAttribute="leading" secondItem="lM2-fg-Kbf" secondAttribute="leading" id="wCl-u2-xHe"/>
                             <constraint firstItem="3jP-zB-3pk" firstAttribute="top" secondItem="P98-8d-4YO" secondAttribute="bottom" constant="28" id="zc2-R2-hkP"/>
                             <constraint firstItem="P98-8d-4YO" firstAttribute="top" secondItem="UXJ-Q8-B8u" secondAttribute="top" constant="69" id="zw7-7I-ahC"/>
                         </constraints>
@@ -89,6 +98,7 @@
                     <connections>
                         <outlet property="genreLabel" destination="lM2-fg-Kbf" id="nh3-KY-loj"/>
                         <outlet property="nameLabel" destination="3jP-zB-3pk" id="nYW-CD-W5D"/>
+                        <outlet property="plotLabel" destination="1mc-Ra-K4n" id="RTV-RW-9Jq"/>
                         <outlet property="posterImageView" destination="P98-8d-4YO" id="am7-nJ-OcB"/>
                     </connections>
                 </viewController>

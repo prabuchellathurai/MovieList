@@ -14,6 +14,7 @@ class MovieListTableViewCell: UITableViewCell {
     
     @IBOutlet weak private var nameLabel: UILabel!
     @IBOutlet weak private var genreLabel: UILabel!
+    @IBOutlet weak private var plotLabel: UILabel!
     @IBOutlet weak private var posterImageView: UIImageView!
     
     private var cellViewModel: MovieListCellViewModel?
@@ -46,6 +47,7 @@ class MovieListTableViewCell: UITableViewCell {
     private func updateText() {
         nameLabel.text = cellViewModel?.name
         genreLabel.text = cellViewModel?.genre
+        plotLabel.text = cellViewModel?.plot
         posterImageView.image = cellViewModel?.posterImage
     }
     

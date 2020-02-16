@@ -3,6 +3,8 @@ import UIKit
 class MovieListViewController: UITableViewController {
 
     private let segueID = "MovieDetail"
+    
+    private var activityIndicator: UIActivityIndicatorView!
     private let viewModel: MovieListViewModel = MovieListViewModel()
     
     override func viewDidLoad() {
@@ -18,25 +20,52 @@ class MovieListViewController: UITableViewController {
 
     private func initialUISetup() {
         navigationItem.title = viewModel.title
+        
+        activityIndicator = UIActivityIndicatorView(style: .large )
+        view.addSubview(activityIndicator)
+        activityIndicator.isHidden = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        
         let nib = UINib(nibName: MovieListTableViewCell.reuseID, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: MovieListTableViewCell.reuseID)
     }
     
     private func load() {
-        
-        viewModel.progress.notify = { (progress) in
+        viewModel.progress.notify = { [weak self] (progress) in
             switch progress {
+            case .ErrorResponse:
+                DispatchQueue.main.async { [weak self] in
+                    self?.showNetworkError()
+                }
             case .End:
                 DispatchQueue.main.async {
-                 self.tableView.reloadData()
+                    self?.activityIndicator.isHidden = true
+                    self?.activityIndicator.stopAnimating()
+                    self?.tableView.reloadData()
                 }
-            default:
-                break
+            case .Start:
+                self?.activityIndicator.isHidden = false
+                self?.activityIndicator.startAnimating()
             }
         }
         
         viewModel.loadMoviesList()
-        
+    }
+    
+    private func showNetworkError() {
+        let title = NSLocalizedString("Network", comment: "title")
+        let messgae = NSLocalizedString("Response error", comment: "message")
+        let alertText = NSLocalizedString("OK", comment: "Default action")
+        let alert = UIAlertController(title: title, message: messgae, preferredStyle: .alert)
+        let action = UIAlertAction(title: alertText, style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    deinit {
+        viewModel.cancelAllDownloads()
     }
     
     // MARK: - Table view data source
@@ -54,47 +83,15 @@ class MovieListViewController: UITableViewController {
         cell!.setViewModel(movieCellViewModel)
         return cell!
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
+    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: segueID, sender: indexPath.row)
     }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -1,11 +1,11 @@
 import Foundation
 import UIKit
 
-class ImageDownload {
+class FetchHttpRequest {
     
     private var downloadTask: URLSessionDataTask?
     
-    func download(url: String, block: @escaping (UIImage?) -> Void) {
+    func request(url: String, block: @escaping (UIImage?) -> Void) {
         let trimedUrl = url.replacingOccurrences(of: " ", with: "")
         guard let imageURL = URL(string: trimedUrl) else {
             return
@@ -20,7 +20,6 @@ class ImageDownload {
             block(image)
         }
         downloadTask?.resume()
-        
     }
     
     func cancel() {

@@ -1,3 +1,3 @@
 enum HttpProgress {
-    case Start, End
+    case Start, ErrorResponse, End
 }

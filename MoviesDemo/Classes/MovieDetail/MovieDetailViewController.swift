@@ -4,6 +4,7 @@ class MovieDetailViewController: UIViewController {
 
     @IBOutlet weak private var nameLabel: UILabel!
     @IBOutlet weak private var genreLabel: UILabel!
+    @IBOutlet weak private var plotLabel: UILabel!
     @IBOutlet weak private var posterImageView: UIImageView!
     
     var viewModel: IMovieDetailViewModel?
@@ -16,7 +17,12 @@ class MovieDetailViewController: UIViewController {
     private func updateText() {
         nameLabel.text = viewModel?.name
         genreLabel.text = viewModel?.genre
+        plotLabel.text = viewModel?.plot
         posterImageView.image = viewModel?.posterImage
+        
+        viewModel?.update = { [weak self] (image) in
+            self?.posterImageView.image = image
+        }
     }
 
     /*
